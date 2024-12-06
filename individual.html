@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>cards</title>
+    <style>
+        body {
+            background: linear-gradient(135deg, #091236, #1E215D);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #E0E0E0;
+            height: 100vh;
+            justify-content: center;
+            overflow: hidden;
+        }
+        #game-container {
+            text-align: center;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid #4caf50;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+            color: #FFF;
+            width: 90%;
+            max-width: 400px;
+        }
+        .card-container {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px;
+            flex-wrap: wrap;
+        }
+        .card-container img {
+            width: 80px;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 255, 171, 0.7), 0 0 40px rgba(0, 255, 171, 0.5), 0 0 60px rgba(0, 255, 171, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card-container img:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 30px rgba(0, 255, 171, 0.9), 0 0 60px rgba(0, 255, 171, 0.6), 0 0 90px rgba(0, 255, 171, 0.4);
+        }
+        #result {
+            font-size: 20px;
+            margin-top: 15px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 20px;
+            color: #fff;
+            background: linear-gradient(135deg, #4caf50, #00FFAB);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 255, 171, 0.4);
+            text-shadow: 0 0 3px #000;
+            width: 100%;
+        }
+        button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 25px rgba(0, 255, 171, 0.6);
+        }
+        
+        @media (max-width: 600px) {
+            .card-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            .card-container img {
+                width: 60px;
+            }
+            button {
+                font-size: 18px;
+                padding: 8px 18px;
+            }
+            #game-container {
+                width: 95%;
+                max-width: 350px;
+            }
+            #result {
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <h1>Cards</h1>
+        <p id="score">Score: <span id="userScore">0</span> - <span id="computerScore">0</span></p>
+        
+        <div class="card-container">
+            <div>
+                <p>Player</p>
+                <img id="userCardImage" src="card 6.jpg" alt="Player card">
+            </div>
+            <div>
+                <p>Computer</p>
+                <img id="computerCardImage" src="card 6.jpg" alt="Computer card">
+            </div>
+        </div>
+        
+        <p id="result">Press the "play" button to start!</p>
+        <button onclick="playGame()">Play</button>
+    </div>
+
+    <script>
+        const cardDeck = [
+            { name: 'card 6', value: 6 },
+            { name: 'card 7', value: 7 },
+            { name: 'card 8', value: 8 },
+            { name: 'card 9', value: 9 },
+            { name: 'card 10', value: 10 },
+            { name: 'valet', value: 2 },
+            { name: 'qeen', value: 3 },
+            { name: 'king', value: 4 },
+            { name: 'A', value: 11 }
+        ];
+
+        let userScore = 0;
+        let computerScore = 0;
+
+        function playGame() {
+            const userCard = cardDeck[Math.floor(Math.random() * cardDeck.length)];
+            const computerCard = cardDeck[Math.floor(Math.random() * cardDeck.length)];
+
+            document.getElementById("userCardImage").src = `${userCard.name}.jpg`;
+            document.getElementById("computerCardImage").src = `${computerCard.name}.jpg`;
+
+            let resultText = `Player gets: ${userCard.value}, Computer gets: ${computerCard.value}. `;
+
+            if (userCard.value > computerCard.value) {
+                userScore++;
+                resultText += `Player wins this round!`;
+            } else if (userCard.value < computerCard.value) {
+                computerScore++;
+                resultText += `Computer wins this round!`;
+            } else {
+                resultText += `Draw`;
+            }
+
+            document.getElementById("userScore").textContent = userScore;
+            document.getElementById("computerScore").textContent = computerScore;
+            document.getElementById("result").textContent = resultText;
+
+            if (userScore === 3 || computerScore === 3) {
+                const winner = userScore === 3 ? "Player" : "Computer";
+                alert(`${winner} Wins the game!`);
+                resetGame();
+            }
+        }
+
+        function resetGame() {
+            userScore = 0;
+            computerScore = 0;
+            document.getElementById("userScore").textContent = userScore;
+            document.getElementById("computerScore").textContent = computerScore;
+            document.getElementById("result").textContent = `Press the "start" button!`;
+        }
+    </script>
+</body>
+</html>
